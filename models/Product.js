@@ -8,7 +8,7 @@ const productSchema= new Schema({
     },
     description:{
         type:String,
-        required:true
+        // required:true
     },
     price:{
         type:Number,
@@ -21,24 +21,24 @@ const productSchema= new Schema({
     category:{
         type:Schema.Types.ObjectId,
         ref:"Category",
-        required:true
+        // required:true
     },
     brand:{
         type:Schema.Types.ObjectId,
         ref:"Brand",
-        required:true
+        // required:true
     },
     stockQuantity:{
         type:Number,
-        required:true
+        // required:true
     },
     thumbnail:{
         type:String,
-        required:true
+        // required:true
     },
     images:{
         type:[String],
-        required:true
+        // required:true
     },
     isDeleted:{
         type:Boolean,
