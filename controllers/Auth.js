@@ -136,7 +136,55 @@ exports.resendOtp=async(req,res)=>{
         const newOtp=new Otp({user:req.body.user,otp:hashedOtp,expiresAt:Date.now()+parseInt(process.env.OTP_EXPIRATION_TIME)})
         await newOtp.save()
 
-        await sendMail(existingUser.email,`OTP Verification for Your MERN-AUTH-REDUX-TOOLKIT Account`,`Your One-Time Password (OTP) for account verification is: <b>${otp}</b>.</br>Do not share this OTP with anyone for security reasons`)
+      await sendMail(
+  existingUser.email,
+  `🔐 Secure OTP for 49Stores.com – Ref#${Math.floor(100000 + Math.random() * 900000)}`,
+  `
+  <div style="background-color: #f4f4f4; font-family: 'Segoe UI', sans-serif; padding: 30px;">
+    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden;">
+      
+      <div style="background-color: #000; padding: 24px; text-align: center;">
+        <h1 style="color: #ffd700; margin: 0; font-size: 26px;">49Stores.com</h1>
+        <p style="color: #ccc; margin: 4px 0 0; font-size: 14px;">Secure Access Gateway</p>
+      </div>
+
+      <div style="padding: 30px;">
+        <h2 style="color: #222; text-align: center; font-size: 22px;">Your One-Time Password (OTP)</h2>
+        
+        <p style="font-size: 15px; text-align: center; color: #555;">Hello <strong>${existingUser.name || 'there'}</strong>,</p>
+        <p style="font-size: 15px; line-height: 1.6; text-align: center; color: #444;">
+          Please use the following OTP to verify your action on <strong>49Stores.com</strong>:
+        </p>
+
+        <div style="text-align: center; margin: 28px 0;">
+          <div style="display: inline-block; background: #f7f7f7; color: #000; padding: 18px 36px; border-radius: 8px; font-size: 30px; letter-spacing: 6px; font-weight: bold; border: 1.5px solid #ccc;">
+            ${otp}
+          </div>
+          <p style="font-size: 13px; color: #777; margin-top: 10px;">(Please copy manually — for your safety, we don’t run any scripts)</p>
+        </div>
+
+        <p style="font-size: 14px; color: #555; text-align: center;">
+          This OTP will expire in <strong>10 minutes</strong>.<br/>
+          Do not share it with anyone — not even our team. 🤝
+        </p>
+
+        <hr style="margin: 36px 0; border: none; border-top: 1px solid #eee;" />
+
+        <p style="font-size: 13px; color: #999; text-align: center;">
+          Ref ID: <strong>#${Math.floor(100000 + Math.random() * 900000)}</strong><br/>
+          Sent securely from <a href="https://49stores.com" style="color: #000; text-decoration: none;">49Stores.com</a>
+        </p>
+
+        <p style="font-size: 13px; color: #aaa; text-align: center; margin-top: 8px;">
+          Need help? DM us on 
+          <a href="https://www.instagram.com/49storesindia/" style="color: #000; font-weight: 500;">Instagram</a> or 
+          <a href="https://www.facebook.com/profile.php?id=61578414568298" style="color: #000; font-weight: 500;">Facebook</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  `
+);
 
         res.status(201).json({'message':"OTP sent"})
     } catch (error) {
@@ -169,16 +217,61 @@ exports.forgotPassword=async(req,res)=>{
         await newToken.save()
 
         // sends the password reset link to the user's mail
-        await sendMail(isExistingUser.email,'Password Reset Link for Your MERN-AUTH-REDUX-TOOLKIT Account',`<p>Dear ${isExistingUser.name},
+        await sendMail(
+  isExistingUser.email,
+  `🔒 Password Reset Request – 49Stores.com`,
+  `
+  <div style="background-color: #f4f4f4; font-family: 'Segoe UI', sans-serif; padding: 30px;">
+    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); overflow: hidden;">
+      
+      <div style="background-color: #000; padding: 24px; text-align: center;">
+        <h1 style="color: #ffd700; margin: 0; font-size: 26px;">49Stores.com</h1>
+        <p style="color: #ccc; margin: 4px 0 0; font-size: 14px;">Secure Account Management</p>
+      </div>
 
-        We received a request to reset the password for your MERN-AUTH-REDUX-TOOLKIT account. If you initiated this request, please use the following link to reset your password:</p>
-        
-        <p><a href=${process.env.ORIGIN}/reset-password/${isExistingUser._id}/${passwordResetToken} target="_blank">Reset Password</a></p>
-        
-        <p>This link is valid for a limited time. If you did not request a password reset, please ignore this email. Your account security is important to us.
-        
-        Thank you,
-        The MERN-AUTH-REDUX-TOOLKIT Team</p>`)
+      <div style="padding: 30px;">
+        <h2 style="color: #222; font-size: 22px;">Password Reset Request</h2>
+
+        <p style="font-size: 15px; color: #555;">
+          Dear <strong>${isExistingUser.name}</strong>,
+        </p>
+
+        <p style="font-size: 15px; color: #444; line-height: 1.6;">
+          We received a request to reset the password for your <strong>49Stores.com</strong> account.
+          If you made this request, please click the button below to securely reset your password:
+        </p>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${process.env.ORIGIN}/reset-password/${isExistingUser._id}/${passwordResetToken}" 
+             target="_blank" 
+             style="background-color: #000; color: #ffd700; text-decoration: none; padding: 14px 28px; border-radius: 6px; font-size: 16px; font-weight: bold;">
+            🔐 Reset My Password
+          </a>
+        </div>
+
+        <p style="font-size: 14px; color: #777;">
+          This link is valid for a limited time and can only be used once.
+          If you did not request this change, you can safely ignore this email.
+        </p>
+
+        <hr style="margin: 36px 0; border: none; border-top: 1px solid #eee;" />
+
+        <p style="font-size: 13px; color: #999; text-align: center;">
+          Email Ref: #${Math.floor(100000 + Math.random() * 900000)}<br/>
+          Sent securely from <a href="https://49stores.com" style="color: #000; text-decoration: none;">49Stores.com</a>
+        </p>
+
+        <p style="font-size: 13px; color: #aaa; text-align: center; margin-top: 8px;">
+          Need help? DM us on 
+          <a href="https://instagram.com/49storesindia" style="color: #000; font-weight: 500;">Instagram</a> or 
+          <a href="https://facebook.com/49storesindia" style="color: #000; font-weight: 500;">Facebook</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  `
+)
+
 
         res.status(200).json({message:`Password Reset link sent to ${isExistingUser.email}`})
 

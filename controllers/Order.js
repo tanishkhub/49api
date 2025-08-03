@@ -3,8 +3,8 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 
 require("dotenv").config(); // Load environment variables
-console.log("Razorpay Key ID:", process.env.RAZORPAY_KEY_ID);
-console.log("Razorpay Key Secret:", process.env.RAZORPAY_KEY_SECRET);
+// console.log("Razorpay Key ID:", process.env.RAZORPAY_KEY_ID);
+// console.log("Razorpay Key Secret:", process.env.RAZORPAY_KEY_SECRET);
 
 // Razorpay instance
 const razorpay = new Razorpay({
