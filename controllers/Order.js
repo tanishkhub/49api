@@ -8,8 +8,8 @@ require("dotenv").config(); // Load environment variables
 
 // Razorpay instance
 const razorpay = new Razorpay({
-    key_id: 'rzp_test_WqlVBQ7UiztsSf', // Fetch from .env
-    key_secret: '8ZAJUktiKZeLBijjJxNa8CDd', // Fetch from .env
+    key_id: process.env.RAZORPAY_KEY_ID,     // e.g., rzp_live_XXXXX
+    key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
 // Create Razorpay order
