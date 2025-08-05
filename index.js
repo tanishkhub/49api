@@ -15,7 +15,7 @@ const reviewRoutes=require("./routes/Review")
 const wishlistRoutes=require("./routes/Wishlist")
 const { connectToDB } = require("./database/db")
 const visitorRoutes = require('./routes/Visitors')
-
+const locationRoutes = require('./routes/Location');
 
 // server init
 const server=express()
@@ -25,7 +25,7 @@ connectToDB()
 
 
 // middlewares
-server.use(cors({origin:process.env.ORIGIN,credentials:true,exposedHeaders:['X-Total-Count'],methods:['GET','POST','PATCH','DELETE']}))
+server.use(cors({origin:process.env.ORIGIN,credentials:true,exposedHeaders:['X-Total-Count'],methods:['GET','POST','PATCH','DELETE','PUT']}))
 server.use(express.json())
 server.use(cookieParser())
 server.use(morgan("tiny"))
@@ -43,7 +43,7 @@ server.use("/reviews",reviewRoutes)
 server.use("/wishlist",wishlistRoutes)
 server.use("/visitors", visitorRoutes); 
 
-
+server.use('/api', locationRoutes);
 
 server.get("/",(req,res)=>{
     res.status(200).json({message:'running'})

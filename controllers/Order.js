@@ -1,6 +1,7 @@
 const Order = require("../models/Order");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const { sendMail } = require("../utils/Emails");
 
 require("dotenv").config(); // Load environment variables
 // console.log("Razorpay Key ID:", process.env.RAZORPAY_KEY_ID);
@@ -73,6 +74,19 @@ exports.verifyPayment = async (req, res) => {
         });
 
         await order.save();
+        await sendMail(
+  'payalchandwani8@gmail.com',
+  `✅ New Online Order Received – ${order._id}`,
+  `
+    <h2 style="font-family: sans-serif;">🧾 New Online Payment Order</h2>
+    <p><strong>Order ID:</strong> ${order._id}</p>
+    <p><strong>Payment ID:</strong> ${razorpay_payment_id}</p>
+    <p><strong>Total:</strong> ₹${total / 100}</p>
+    <p><strong>Payment Mode:</strong> ${paymentMode}</p>
+    <p><strong>Placed At:</strong> ${new Date().toLocaleString()}</p>
+  `
+);
+
 
         res.status(200).json({ message: "Payment verified successfully", order });
     } catch (error) {
@@ -86,6 +100,18 @@ exports.create = async (req, res) => {
     try {
         const created = new Order(req.body);
         await created.save();
+        await sendMail(
+  'payalchandwani8@gmail.com',
+  `📦 New COD Order Placed – ${created._id}`,
+  `
+    <h2 style="font-family: sans-serif;">🧾 New COD Order</h2>
+    <p><strong>Order ID:</strong> ${created._id}</p>
+    <p><strong>Total:</strong> ₹${req.body.total}</p>
+    <p><strong>Payment Mode:</strong> ${req.body.paymentMode}</p>
+    <p><strong>Placed At:</strong> ${new Date().toLocaleString()}</p>
+  `
+);
+
         res.status(201).json(created);
     } catch (error) {
         console.log(error);
